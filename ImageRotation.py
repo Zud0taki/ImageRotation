@@ -74,7 +74,7 @@ def main(img_folder, txt_folder, out_folder):
                 for l in range(len(x_list)):
                     x_list[l] = float(x_list[l]) * img_x
                     y_list[l] = float(y_list[l]) * img_y
-
+            rotation_counter = 0
             while rotation_counter < 3 :
                 point = img_center_x, img_center_y
                 if rotation_counter == 0:
