@@ -7,8 +7,6 @@ from PyQt5.uic import loadUi
 from ImageRotation import main
 
 
-
-
 # MainWindow is the Class of the Graphical User Interface
 # define the class as QDialog and initialize it with its variables
 class MainWindow(QMainWindow):
@@ -46,7 +44,6 @@ class MainWindow(QMainWindow):
 
     def progress(self):
         hallo = 0
-
 
 
 app = QApplication(sys.argv)
