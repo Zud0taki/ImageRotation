@@ -44,6 +44,9 @@ class MainWindow(QMainWindow):
         out_folder = self.outputBrowser.toPlainText()
         main(img_folder, txt_folder, out_folder)
 
+    def progress(self):
+        hallo = 0
+
 
 
 app = QApplication(sys.argv)
@@ -51,6 +54,6 @@ mainwindow = MainWindow()
 widget = QtWidgets.QStackedWidget()
 widget.addWidget(mainwindow)
 widget.setFixedWidth(616)
-widget.setFixedHeight(325)
+widget.setFixedHeight(320)
 widget.show()
 sys.exit(app.exec_())

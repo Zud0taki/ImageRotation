@@ -23,6 +23,8 @@ def main(img_folder, txt_folder, out_folder):
     img_folder = img_folder + "/*.jpg"
     for image in glob.glob(img_folder):
         img_input.append(image)
+    length = len(img_input)
+    progress()
     txt_folder = txt_folder + "/*.txt"
     for text in glob.glob(txt_folder):
         txt_input.append(text)
