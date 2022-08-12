@@ -4,6 +4,7 @@ import glob
 import math
 from scipy import ndimage
 
+
 # declare main method
 def main(img_folder, txt_folder, out_folder):
     # variable declaration for the main method
@@ -19,18 +20,18 @@ def main(img_folder, txt_folder, out_folder):
     temp_y_list = []
     rotation_counter = 0
 
-    # Dateinamen vom Speicherort auslesen und im Schleifenkörper in einem Array speichern
+    # read files from paths and save in array
     img_folder = img_folder + "/*.jpg"
     for image in glob.glob(img_folder):
         img_input.append(image)
-    length = len(img_input)
-    progress()
     txt_folder = txt_folder + "/*.txt"
     for text in glob.glob(txt_folder):
         txt_input.append(text)
 
-    # Überprüfung ob img_input und txt_input die gleiche Anzahl an Elementen enthalten
+    # check if img_input and txt_input have the same length
     if len(img_input) == len(txt_input):
+
+        # get image and txt file name
         for f in range(len(img_input)):
             # read images and txt´s - check if names are the same
             img = cv2.imread(img_input[f], -1)
@@ -48,11 +49,12 @@ def main(img_folder, txt_folder, out_folder):
             txt_name = txt_name.split(".")
             txt_name = txt_name[0]
 
+            # check if both names match
             if img_name == txt_name:
                 for line in txt_file:
                     line = line.split()
                     txt_from_line.append(line)
-
+                # get img_center for calc
                 for d in range(len(txt_from_line)):
                     x_list.append(txt_from_line[d][1])
                     y_list.append(txt_from_line[d][2])
@@ -77,7 +79,9 @@ def main(img_folder, txt_folder, out_folder):
                     x_list[l] = float(x_list[l]) * img_x
                     y_list[l] = float(y_list[l]) * img_y
             rotation_counter = 0
-            while rotation_counter < 3 :
+
+            # calculate turned images and construct new annotation files
+            while rotation_counter < 3:
                 point = img_center_x, img_center_y
                 if rotation_counter == 0:
                     for h in range(len(x_list)):
@@ -94,12 +98,13 @@ def main(img_folder, txt_folder, out_folder):
                         temp_x_list.append(new_x)
                         temp_y_list.append(new_y)
 
-                        concat = "1" +" "+ str(new_x/img_y)+" "+ str(new_y/img_x) +" "+ str(y_exp_list[h]) + " " + str(x_exp_list[h])
+                        concat = "1" + " " + str(new_x / img_y) + " " + str(new_y / img_x) + " " + str(
+                            y_exp_list[h]) + " " + str(x_exp_list[h])
                         export_list.append(concat)
 
                     rotated = cv2.rotate(img, cv2.cv2.ROTATE_90_CLOCKWISE)
                     centercoords = (int(new_x), int(new_y))
-                    #TODO: Implement visualisation marker
+                    # TODO: Implement visualisation marker
                     # cv2.circle(rotated, centercoords, radius, color, thickness)
                     cv2.imwrite(out_folder + "/" + img_name + "_" + str(rotation_counter) + ".jpg", rotated)
                     txt_name_export = (out_folder + "/" + txt_name + "_" + str(rotation_counter) + ".txt")
@@ -109,7 +114,7 @@ def main(img_folder, txt_folder, out_folder):
                     txtfile.close()
                     export_list = []
                     print("Rotation_1_completed")
-                    rotation_counter+=1
+                    rotation_counter += 1
 
                 if rotation_counter == 1:
                     for h in range(len(x_list)):
@@ -126,7 +131,8 @@ def main(img_folder, txt_folder, out_folder):
                         temp_x_list.append(new_x)
                         temp_y_list.append(new_y)
 
-                        concat = "1" + " " + str(new_x / img_x) + " " + str(new_y / img_y) + " " + str(x_exp_list[h]) + " " + str(y_exp_list[h])
+                        concat = "1" + " " + str(new_x / img_x) + " " + str(new_y / img_y) + " " + str(
+                            x_exp_list[h]) + " " + str(y_exp_list[h])
                         export_list.append(concat)
 
                     rotated = cv2.rotate(img, cv2.cv2.ROTATE_180)
@@ -158,7 +164,8 @@ def main(img_folder, txt_folder, out_folder):
                         temp_x_list.append(new_x)
                         temp_y_list.append(new_y)
 
-                        concat = "1" + " " + str(new_x / img_y) + " " + str(new_y / img_x) + " " + str(y_exp_list[h]) + " " + str(x_exp_list[h])
+                        concat = "1" + " " + str(new_x / img_y) + " " + str(new_y / img_x) + " " + str(
+                            y_exp_list[h]) + " " + str(x_exp_list[h])
                         export_list.append(concat)
 
                     rotated = cv2.rotate(img, cv2.cv2.ROTATE_90_COUNTERCLOCKWISE)
@@ -177,6 +184,7 @@ def main(img_folder, txt_folder, out_folder):
                     print("Next_Image")
                     print(str(f))
 
+            # empty lists for next image
             txt_from_line = []
             x_list = []
             y_list = []
